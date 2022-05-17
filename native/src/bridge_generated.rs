@@ -4,6 +4,7 @@
     clippy::redundant_closure,
     clippy::useless_conversion,
     clippy::unit_arg,
+    clippy::double_parens,
     non_snake_case
 )]
 // AUTO GENERATED FILE, DO NOT EDIT.
@@ -40,7 +41,26 @@ pub extern "C" fn wire_rust_release_mode(port_: i64) {
     )
 }
 
+#[no_mangle]
+pub extern "C" fn wire_add_one(port_: i64, n: i32) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "add_one",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_n = n.wire2api();
+            move |task_callback| Ok(add_one(api_n))
+        },
+    )
+}
+
 // Section: wire structs
+
+// Section: wrapper structs
+
+// Section: static checks
 
 // Section: allocate functions
 
@@ -60,6 +80,12 @@ where
         } else {
             Some(self.wire2api())
         }
+    }
+}
+
+impl Wire2Api<i32> for i32 {
+    fn wire2api(self) -> i32 {
+        self
     }
 }
 
